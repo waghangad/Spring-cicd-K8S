@@ -57,6 +57,11 @@
 					<warSourceDirectory>WebContent</warSourceDirectory>
 				</configuration>
 			</plugin>
+			<plugin>  
+            	<groupId>org.springframework.boot</groupId>  
+            	<artifactId>spring-boot-maven-plugin</artifactId>  
+            	<version>4.0.1</version>  
+        	</plugin>  
 		</plugins>
 		<finalName>${project.artifactId}</finalName> <!-- added to remove Version from WAR file -->
 	</build>
