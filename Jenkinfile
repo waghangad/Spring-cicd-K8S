@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+    tools{
+        maven "Maven"
+    }
+    environment{
+        registry="658256467033.dkr.ecr.ap-south-1.amazonaws.com/k8s-demo-remo"
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/waghangad/k8s-cicd-java-spring']]])
+            }
+        }
+        stage('Build Jar'){
+            steps{
+                sh "mvn clean install"
+            }
+        }
+        stage('Build Image'){
+            steps{
+                script{
+                    docker.build registry
+                }
+            }
+        }
+        stage('Push into ECR'){
+            steps{
+                sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 658256467033.dkr.ecr.ap-south-1.amazonaws.com"
+                sh "docker push 658256467033.dkr.ecr.ap-south-1.amazonaws.com/k8s-demo-remo:latest"
+            }
+        }
+        stage('K8S Deploy'){
+            steps{
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', serverUrl: '']]) {
+                    sh "kubectl apply -f eks-deploy-k8s.yaml"
+                }
+            }
+        }
+    }
+}

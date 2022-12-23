@@ -1,4 +1,4 @@
-package com.tcs.angularjs;
+package com.demo.eks;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

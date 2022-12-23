@@ -1,4 +1,4 @@
-package com.tcs.angularjs.model;
+package com.demo.eks.model;
 public class Customer {
     private String firstname;
     private String lastname;
