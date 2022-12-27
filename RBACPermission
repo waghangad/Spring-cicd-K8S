@@ -1,0 +1,14 @@
+
+### To ADD RBAC permission to IAM user #####
+
+kubectl describe cm aws-auth -n kube-sytem
+
+
+eksctl create iamidentitymapping \
+    --cluster demo-eks \
+    --region=ap-south-1 \
+    --arn arn:aws:iam::658256467033:user/Angad \
+    --group system:masters \
+    --username Angad
+
+
